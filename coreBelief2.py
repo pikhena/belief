@@ -59,12 +59,35 @@ helplessnessparentclass_data = []
 unlovableparentclass_data = []
 worthlessnessparentclass_data = []
 
-
 allData = []
 normalizedallData = []
 
+#dictionaries to store probability values. It saves the words as keys in these dictionaries, and the calculation of their probabilities as the values.
+helplessnessparentClassProb = {}
+unlovableparentClassProb = {}
+worthlessnessparentClassProb = {}
+
+defectivenesscbcProb = {}
+safetycbcProb = {}
+wholenesscbcProb = {}
+selfworthcbcProb = {}
+boundariescbcProb = {}
+moralitycbcProb = {}
+belongingcbcProb = {}
+
+worthless_prob = {}
+unlovable_prob = {}
+safety_prob = {}
+belong_prob = {}
+defective_prob = {}
+whole_prob = {}
+nothing_prob = {}
+powerless_prob = {}
+balance_prob = {}
+unsure_prob = {}
 
 
+#directories
 alldirectory = "/Users/priscillaikhena/Downloads/NLPProject/trainingdata/"
 directory_worthless = "/Users/priscillaikhena/Downloads/NLPProject/trainingdata/worthless_corpus.txt/"
 directory_unlovable = "/Users/priscillaikhena/Downloads/NLPProject/trainingdata/unlovable_corpus.txt/"
@@ -77,11 +100,38 @@ directory_powerless = "/Users/priscillaikhena/Downloads/NLPProject/trainingdata/
 directory_balance = "/Users/priscillaikhena/Downloads/NLPProject/trainingdata/balance_corpus.txt/"
 directory_unsure = "/Users/priscillaikhena/Downloads/NLPProject/trainingdata/unsure_corpus.txt/"
 
-"""dictionary mapping between parent class, core belief classes, core beliefs and quotes"""
 
+#DICTIONARIES MAPPING BETWEEN PARENT CLASS, CORE BELIEF CLASSES, CORE BELIEFS AND QUOTES----------------------------------------------------------------
 
+#cbc to core belief dictionary. This dictionary shows the mapping between core beliefs and core belief classes.
+cbctocorebelief = {
+		"defectiveness" : ["defective", "unlovable"],
+		"safety" : "safe",
+		"wholeness" : "whole",
+		"selfworth" : ["nothing", "worthless"],
+		"boundaries" : ["powerless", "balance"],
+		"morality" : "unsure",
+        "belonging" : "belong"
+	};
 
+#parent class to core belief class, is a dictionary that shows the mapping between parent classes and the sub core belief classes.
+parentclasstocbc = {
+		"helplessness" : ["safety", "morality", "boundaries"],
+		"unlovable" : ["belonging", "defectiveness"],
+        "worthlessness" : ["wholeness", "selfworth"]
 
+	};
+
+#core belief class to quote, is a dictionary that shows the mapping between core belief classes and the quotes and ecouraging words we'd like to show the user based on the core belief class detected.
+cbctoquote = {
+		"defectiveness" : ["quote1", "advice1"],
+		"safety" : ["quote2", "advice2"],
+		"wholeness" : ["quote3", "advice3"],
+		"selfworth" : ["quote4", "advice4"],
+		"boundaries" : ["quote5", "advice5"],
+		"morality" : ["quote6", "advice6"],
+        "belonging" : ["quote7", "advice7"],
+	};
 
 
 #READING IN THE CORPUS----------------------------------------------------------------
@@ -118,32 +168,89 @@ for word in tokenizedallData:
     normalizedallData.append(newword)
 
 
-print normalizedallData
-
-
-
-
-
-
 #Tokenizing and Normalizing core belief lists
 
+worthless_tokenized = nltk.word_tokenize(worthless_data)
+unlovable_tokenized = nltk.word_tokenize(unlovable_data)
+safety_tokenized = nltk.word_tokenize(safety_data)
+belong_tokenized = nltk.word_tokenize(belong_data)
+defective_tokenized = nltk.word_tokenize(defective_data)
+whole_tokenized = nltk.word_tokenize(whole_data)
+nothing_tokenized = nltk.word_tokenize(nothing_data)
+powerless_tokenized = nltk.word_tokenize(powerless_data)
+balance_tokenized = nltk.word_tokenize(balance_data)
+unsure_tokenized = nltk.word_tokenize(unsure_data)
 
 
+for word in worthless_tokenized:
+    newword = lower(word)
+    worthless_normalized.append(newword)
+
+for word in unlovable_tokenized:
+    newword = lower(word)
+    unlovable_normalized.append(newword)
+
+for word in safety_tokenized:
+    newword = lower(word)
+    safety_normalized.append(newword)
+
+for word in belong_tokenized:
+    newword = lower(word)
+    belong_normalized.append(newword)
+
+for word in defective_tokenized:
+    newword = lower(word)
+    defective_normalized.append(newword)
+
+for word in whole_tokenized:
+    newword = lower(word)
+    whole_normalized.append(newword)
+
+for word in nothing_tokenized:
+    newword = lower(word)
+    nothing_normalized.append(newword)
+
+for word in powerless_tokenized:
+    newword = lower(word)
+    powerless_normalized.append(newword)
+
+for word in balance_tokenized:
+    newword = lower(word)
+    balance_normalized.append(newword)
+
+for word in unsure_tokenized:
+    newword = lower(word)
+    unsure_normalized.append(newword)
 
 
+#Filling up core belief class lists
+
+defectivenesscbc_data = defective_normalized + unlovable_normalized
+safetycbc_data = safety_normalized
+wholenesscbc_data = whole_normalized
+selfworthcbc_data = nothing_normalized + worthless_normalized
+boundariescbc_data = powerless_normalized + balance_normalized
+moralitycbc_data = unsure_normalized
+belongingcbc_data = belong_normalized
 
 
+#Filling up parent class lists
+helplessnessparentclass_data = safetycbc_data + moralitycbc_data + boundariescbc_data
+unlovableparentclass_data = belongingcbc_data + defectivenesscbc_data
+worthlessnessparentclass_data = wholenesscbc_data + selfworthcbc_data
 
 
 
 #Creating a vocabulary of all words in our training data
 
+normalizedallDataCount = Counter(normalizedallData)
+for key, value in normalizedallDataCount.iteritems():
+        if value >= 2:
+            all_vocab.append(key)
 
 
 
-
-
-"""functions to calculate probabilities"""
+#CALCULATING AND ASSIGNING PROBABILITIES - TRAINING THE DATA----------------------------------------------------------------
 #function to calculate the probability that keywords fall into parent class - HELPLESS
 #function to calculate the probability that keywords fall into parent class - WORTHLESS
 #function to calculate the probability that keywords fall into parent class - UNLOVABLE
@@ -166,7 +273,7 @@ print normalizedallData
 #function to calculate the probability that keywords in CoreBelief -
 
 
-"""functions to check the probabilities"""
+#FUNCTIONS TO CHECK AND RETURN THE GREATER PROBABILITY, FOR THE TEST DATA.----------------------------------------------------------------
 
 #function to check the parent class. This function takes in the keywords, and returns the parent class with the highest probability
     #the function calls other parent class functions to calculate their probabilities, and then returns the greatest.
@@ -189,8 +296,8 @@ print normalizedallData
     #if it's a tie, choose one to return.
 
 
-#USER INPUT---------------------------------------------------------------
-"""Main Function that prompts the user with questions, and processes their responses into keywords to pass into the functions above"""
+#USER INPUT - MAIN FUNCTION THAT PROMPTS THE USER WITH QUESTIONS, AND PROCESSES THEIR RESPONSES INTO KEYWORDS, THEN CALLING THE FUNCTIONS ABOVE---------------------------------------------------------------
+
 #def main function
 #ask the user the first question, and then register their first response as keywords.
 #pass keywords into the the check parent class function.
