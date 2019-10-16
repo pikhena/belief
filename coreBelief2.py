@@ -251,26 +251,372 @@ for key, value in normalizedallDataCount.iteritems():
 
 
 #CALCULATING AND ASSIGNING PROBABILITIES - TRAINING THE DATA----------------------------------------------------------------
+def calculateProbScore(wordfreq, totalcountofwordsingroup, vocabularycount, k):
+
+    score = log((wordfreq + k), 10) / log((totalcountofwordsingroup + (vocabularycount * k)), 10)
+    return score
+#Parent Classes Calculation
+normalizedHelpless = Counter(helplessnessparentclass_data)
+normalizedUnlovable = Counter(unlovableparentclass_data)
+normalizedWorthless = Counter(worthlessnessparentclass_data)
+
 #function to calculate the probability that keywords fall into parent class - HELPLESS
+for key, value in normalizedHelpless.iteritems():
+
+            helplesswordscore = calculateProbScore(value, len(helplessnessparentclass_data), len(all_vocab), 1)
+            helplessnessparentClassProb[key] = helplesswordscore
+
 #function to calculate the probability that keywords fall into parent class - WORTHLESS
+for key, value in normalizedWorthless.iteritems():
+
+            worthlesswordscore = calculateProbScore(value, len(worthlessnessparentclass_data), len(all_vocab), 1)
+            worthlessnessparentClassProb[key] = worthlesswordscore
+
+
 #function to calculate the probability that keywords fall into parent class - UNLOVABLE
+for key, value in normalizedUnlovable.iteritems():
+
+            unlovablewordscore = calculateProbScore(value, len(unlovableparentclass_data), len(all_vocab), 1)
+            unlovableparentClassProb[key] = unlovablewordscore
+
+
+#Core Belief Classes Calculation
+normalizedsafetycbc = Counter(safetycbc_data)
+normalizedmoralitycbc = Counter(moralitycbc_data)
+normalizedboundariescbc = Counter(boundariescbc_data)
+normalizedbelongingcbc = Counter(belongingcbc_data)
+normalizeddefectivecbc = Counter(defectivenesscbc_data)
+normalizedwholenesscbc = Counter(wholenesscbc_data)
+normalizedselfworthcbc = Counter(selfworthcbc_data)
+
 #function to calculate the probability that keywords fall into CBC - SAFETY
+for key, value in normalizedsafetycbc.iteritems():
+
+            safetycbcwordscore = calculateProbScore(value, len(safetycbc_data), len(all_vocab), 1)
+            safetycbcProb[key] = safetycbcwordscore
+
 #function to calculate the probability that keywords fall into CBC - MORALITY
+for key, value in normalizedmoralitycbc.iteritems():
+
+            moralitycbcwordscore = calculateProbScore(value, len(moralitycbc_data), len(all_vocab), 1)
+            moralitycbcProb[key] = moralitycbcwordscore
+
+
 #function to calculate the probability that keywords fall into CBC - BOUNDARIES
+for key, value in normalizedboundariescbc.iteritems():
+
+            boundariescbcwordscore = calculateProbScore(value, len(boundariescbc_data), len(all_vocab), 1)
+            boundariescbcProb[key] = boundariescbcwordscore
+
+
+
 #function to calculate the probability that keywords fall into CBC - BELONGING
+for key, value in normalizedbelongingcbc.iteritems():
+
+            belongingcbcwordscore = calculateProbScore(value, len(belongingcbc_data), len(all_vocab), 1)
+            belongingcbcProb[key] = belongingcbcwordscore
+
+
 #function to calculate the probability that keywords fall into CBC - DEFECTIVENESS
+for key, value in normalizeddefectivecbc.iteritems():
+
+            defectivecbcwordscore = calculateProbScore(value, len(defectivenesscbc_data), len(all_vocab), 1)
+            defectivenesscbcProb[key] = defectivecbcwordscore
+
+
+
 #function to calculate the probability that keywords fall into CBC - WHOLENESS
+for key, value in normalizedwholenesscbc.iteritems():
+
+            wholenesscbcwordscore = calculateProbScore(value, len(wholenesscbc_data), len(all_vocab), 1)
+            wholenesscbcProb[key] = wholenesscbcwordscore
+
+
+
 #function to calculate the probability that keywords fall into CBC - SELFWORTH
-#function to calculate the probability that keywords in CoreBelief -
-#function to calculate the probability that keywords in CoreBelief -
-#function to calculate the probability that keywords in CoreBelief -
-#function to calculate the probability that keywords in CoreBelief -
-#function to calculate the probability that keywords in CoreBelief -
-#function to calculate the probability that keywords in CoreBelief -
-#function to calculate the probability that keywords in CoreBelief -
-#function to calculate the probability that keywords in CoreBelief -
-#function to calculate the probability that keywords in CoreBelief -
-#function to calculate the probability that keywords in CoreBelief -
+
+for key, value in normalizedselfworthcbc.iteritems():
+
+            selfworthcbcwordscore = calculateProbScore(value, len(selfworthcbc_data), len(all_vocab), 1)
+            selfworthcbcProb[key] = selfworthcbcwordscore
+
+#Core Belief Calculation
+
+normalizedworthlesscb = Counter(worthless_normalized)
+normalizedunlovablecb = Counter(unlovable_normalized)
+normalizedsafetycb = Counter(safety_normalized)
+normalizedbelongcb = Counter(belong_normalized)
+normalizeddefectivecb = Counter(defective_normalized)
+normalizedwwholecb = Counter(whole_normalized)
+normalizednothingcb = Counter(nothing_normalized)
+normalizedpowerlesscb = Counter(powerless_normalized)
+normalizedbalancecb = Counter(balance_normalized)
+normalizedunsurecb = Counter(unsure_normalized)
+
+#function to calculate the probability that keywords in Worthless CB
+for key, value in normalizedworthlesscb.iteritems():
+
+            worthcbwordscore = calculateProbScore(value, len(worthless_normalized), len(all_vocab), 1)
+            worthless_prob[key] = worthcbwordscore
+
+
+#function to calculate the probability that keywords in Unlovable CB
+for key, value in normalizedunlovablecb.iteritems():
+
+            unlovablecbwordscore = calculateProbScore(value, len(unlovable_normalized), len(all_vocab), 1)
+            unlovable_prob[key] = unlovablecbwordscore
+
+
+#function to calculate the probability that keywords in Safety CB
+for key, value in normalizedsafetycb.iteritems():
+
+            safetycbwordscore = calculateProbScore(value, len(safety_normalized), len(all_vocab), 1)
+            safety_prob[key] = safetycbwordscore
+
+#function to calculate the probability that keywords in Belong CB
+for key, value in normalizedbelongcb.iteritems():
+
+            belongcbwordscore = calculateProbScore(value, len(belong_normalized), len(all_vocab), 1)
+            belong_prob[key] = belongcbwordscore
+
+
+#function to calculate the probability that keywords in Defective CB
+for key, value in normalizeddefectivecb.iteritems():
+
+            defectivecbwordscore = calculateProbScore(value, len(defective_normalized), len(all_vocab), 1)
+            defective_prob[key] = defectivecbwordscore
+
+
+#function to calculate the probability that keywords in Whole CB
+for key, value in normalizedwwholecb.iteritems():
+
+            wholecbwordscore = calculateProbScore(value, len(whole_normalized), len(all_vocab), 1)
+            whole_prob[key] = wholecbwordscore
+
+
+#function to calculate the probability that keywords in Nothing CB
+for key, value in normalizednothingcb.iteritems():
+
+            nothingcbwordscore = calculateProbScore(value, len(nothing_normalized), len(all_vocab), 1)
+            nothing_prob[key] = nothingcbwordscore
+
+#function to calculate the probability that keywords in Powerless CB
+for key, value in normalizedpowerlesscb.iteritems():
+
+            powerlesscbwordscore = calculateProbScore(value, len(powerless_normalized), len(all_vocab), 1)
+            powerless_prob[key] = powerlesscbwordscore
+
+
+#function to calculate the probability that keywords in Balance CB
+for key, value in normalizedbalancecb.iteritems():
+
+            balancecbwordscore = calculateProbScore(value, len(balance_normalized), len(all_vocab), 1)
+            balance_prob[key] = balancecbwordscore
+
+
+#function to calculate the probability that keywords in Unsure CB
+for key, value in normalizedunsurecb.iteritems():
+
+            unsurecbwordscore = calculateProbScore(value, len(unsure_normalized), len(all_vocab), 1)
+            unsure_prob[key] = unsurecbwordscore
+
+#FUNCTIONS TO RETURN THE PROBABILITIES OF WORDS TO TEST THE MODEL-------------------------------------------------
+
+#Parent Classes
+def checkHelplessnessParentClassProb(word):
+	if word in helplessnessparentClassProb.keys():
+		helplessvalue = helplessnessparentClassProb.get(word)
+
+	else:
+		helplessvalue = 0
+
+	return helplessvalue
+
+
+
+def checkUnlovableParentClassProb(word):
+	if word in unlovableparentClassProb.keys():
+		unlovablevalue = unlovableparentClassProb.get(word)
+
+	else:
+		unlovablevalue = 0
+
+	return unlovablevalue
+
+
+def checkWorthlessnessParentClassProb(word):
+	if word in worthlessnessparentClassProb.keys():
+		worthlessvalue = worthlessnessparentClassProb.get(word)
+
+	else:
+		worthlessvalue = 0
+
+	return worthlessvalue
+
+#Core Belief Classes
+def checkSafetyCoreBeliefClassProb(word):
+	if word in safetycbcProb.keys():
+		safetyvalue = safetycbcProb.get(word)
+
+	else:
+		safetyvalue = 0
+
+	return safetyvalue
+
+
+def checkDefectiveCoreBeliefClassProb(word):
+	if word in defectivenesscbcProb.keys():
+		defectivevalue = defectivenesscbcProb.get(word)
+
+	else:
+		defectivevalue = 0
+
+	return defectivevalue
+
+def checkWholenessCoreBeliefClassProb(word):
+	if word in wholenesscbcProb.keys():
+		wholenessvalue = wholenesscbcProb.get(word)
+
+	else:
+		wholenessvalue = 0
+
+	return wholenessvalue
+
+
+def checkSelfWorthCoreBeliefClassProb(word):
+	if word in selfworthcbcProb.keys():
+		selfworthvalue = selfworthcbcProb.get(word)
+
+	else:
+		selfworthvalue = 0
+
+	return selfworthvalue
+
+
+def checkBoundariesCoreBeliefClassProb(word):
+	if word in boundariescbcProb.keys():
+		boundariesvalue = boundariescbcProb.get(word)
+
+	else:
+		boundariesvalue = 0
+
+	return boundariesvalue
+
+
+def checkMoralityCoreBeliefClassProb(word):
+	if word in moralitycbcProb.keys():
+		moralityvalue = moralitycbcProb.get(word)
+
+	else:
+		moralityvalue = 0
+
+	return moralityvalue
+
+
+def checkBelongingCoreBeliefClassProb(word):
+	if word in belongingcbcProb.keys():
+		belongingvalue = belongingcbcProb.get(word)
+
+	else:
+		belongingvalue = 0
+
+	return belongingvalue
+
+#Core Beliefs
+def checkWorthlessCoreBeliefProb(word):
+	if word in worthless_prob.keys():
+		worthvalue = worthless_prob.get(word)
+
+	else:
+		worthvalue = 0
+
+	return worthvalue
+
+def checkUnlovableCoreBeliefProb(word):
+	if word in unlovable_prob.keys():
+		unlovablevalue = unlovable_prob.get(word)
+
+	else:
+		unlovablevalue = 0
+
+	return unlovablevalue
+
+def checkSafetyCoreBeliefProb(word):
+	if word in safety_prob.keys():
+		safetyvalue = safety_prob.get(word)
+
+	else:
+		safetyvalue = 0
+
+	return safetyvalue
+
+
+def CheckBelongCoreBeliefProb(word):
+	if word in belong_prob.keys():
+		belongvalue = belong_prob.get(word)
+
+	else:
+		belongvalue = 0
+
+	return belongvalue
+
+def checkDefectiveCoreBeliefProb(word):
+	if word in defective_prob.keys():
+		defectivevalue = defective_prob.get(word)
+
+	else:
+		defectivevalue = 0
+
+	return defectivevalue
+
+
+def checkWholeCoreBeliefProb(word):
+	if word in whole_prob.keys():
+		wholevalue = whole_prob.get(word)
+
+	else:
+		wholevalue = 0
+
+	return wholevalue
+
+
+def checkNothingCoreBeliefProb(word):
+	if word in nothing_prob.keys():
+		nothingvalue = nothing_prob.get(word)
+
+	else:
+		nothingvalue = 0
+
+	return nothingvalue
+
+
+def checkPowerlessCoreBeliefProb(word):
+	if word in powerless_prob.keys():
+		powerlessvalue = powerless_prob.get(word)
+
+	else:
+		powerlessvalue = 0
+
+	return powerlessvalue
+
+def checkBalanceCoreBeliefProb(word):
+	if word in balance_prob.keys():
+		balancevalue = balance_prob.get(word)
+
+	else:
+		balancevalue = 0
+
+	return balancevalue
+
+
+def checkUnsureCoreBeliefProb(word):
+	if word in unsure_prob.keys():
+		unsurevalue = unsure_prob.get(word)
+
+	else:
+		unsurevalue = 0
+
+	return unsurevalue
 
 
 #FUNCTIONS TO CHECK AND RETURN THE GREATER PROBABILITY, FOR THE TEST DATA.----------------------------------------------------------------
@@ -294,6 +640,7 @@ for key, value in normalizedallDataCount.iteritems():
 #function to check the core belief. This function takes in keywords and also the CBC class. It then calls the corresponding core belief functions,
     #and returns the core belief with the highest score.
     #if it's a tie, choose one to return.
+
 
 
 #USER INPUT - MAIN FUNCTION THAT PROMPTS THE USER WITH QUESTIONS, AND PROCESSES THEIR RESPONSES INTO KEYWORDS, THEN CALLING THE FUNCTIONS ABOVE---------------------------------------------------------------
