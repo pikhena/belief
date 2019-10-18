@@ -106,12 +106,12 @@ directory_unsure = "/Users/priscillaikhena/Downloads/NLPProject/trainingdata/uns
 #cbc to core belief dictionary. This dictionary shows the mapping between core beliefs and core belief classes.
 cbctocorebelief = {
 		"defectiveness" : ["defective", "unlovable"],
-		"safety" : "safe",
-		"wholeness" : "whole",
+		"safety" : ["safe"],
+		"wholeness" : ["whole"],
 		"selfworth" : ["nothing", "worthless"],
 		"boundaries" : ["powerless", "balance"],
-		"morality" : "unsure",
-        "belonging" : "belong"
+		"morality" : ["unsure"],
+        "belonging" : ["belong"]
 	};
 
 #parent class to core belief class, is a dictionary that shows the mapping between parent classes and the sub core belief classes.
@@ -130,7 +130,21 @@ cbctoquote = {
 		"selfworth" : ["quote4", "advice4"],
 		"boundaries" : ["quote5", "advice5"],
 		"morality" : ["quote6", "advice6"],
-        "belonging" : ["quote7", "advice7"],
+        "belonging" : ["quote7", "advice7"]
+	};
+
+#corebelief to core belief statements
+cbtostatement = {
+		"defective" : "I am defective, it's always my fault.",
+		"unlovable" : "Nobody loves me, I am unlovable.",
+		"safe" : "I am unsafe, I can't trust anyone.",
+		"whole" : " I am not whole, I have lost my spirit.",
+		"nothing" : "I am nothing, I don't exist.",
+		"worthless" : "I am worthless.",
+		"powerless" : "I am powerless",
+		"balance" : "I am out of balance, my life is out of control.",
+		"unsure" : "I am wrong about everything.",
+		"belong" : "I don't belong, no one understands me."
 	};
 
 
@@ -618,14 +632,47 @@ def checkUnsureCoreBeliefProb(word):
 
 	return unsurevalue
 
+#test = checkWholeCoreBeliefProb('safe')
+#test2 = checkSafetyCoreBeliefProb('safe')
+#print test
+#print test2
+
 
 #FUNCTIONS TO CHECK AND RETURN THE GREATER PROBABILITY, FOR THE TEST DATA.----------------------------------------------------------------
 
 #function to check the parent class. This function takes in the keywords, and returns the parent class with the highest probability
     #the function calls other parent class functions to calculate their probabilities, and then returns the greatest.
     #if it's a tie, choose one to return.
+def getParentClass(list):
+	helplessness = []
+	unlovable = []
+	worthlessness = []
+	for word in list:
+		helplessness.append(checkHelplessnessParentClassProb(word))
+		unlovable.append(checkUnlovableParentClassProb(word))
+		worthlessness.append(checkWorthlessnessParentClassProb(word))
+
+	helplessnessvalue = 0
+	for num in helplessness:
+		helplessnessvalue += num
+
+	unlovablevalue = 0
+	for num in unlovable:
+		unlovablevalue += num
+
+	worthlessnessvalue = 0
+	for num in worthlessness:
+		worthlessnessvalue += num
 
 
+	if helplessnessvalue > unlovablevalue and helplessnessvalue > worthlessnessvalue:
+		return "helplessness"
+
+	if unlovablevalue > helplessnessvalue and unlovablevalue > worthlessnessvalue:
+		return "unlovable"
+
+	if worthlessnessvalue > helplessnessvalue and worthlessnessvalue > unlovablevalue:
+		return "worthlessness"
 
 
 #function to check the core belief class. This function takes in the keywords, and the parent class.
@@ -634,16 +681,249 @@ def checkUnsureCoreBeliefProb(word):
     #It returns what core belief class has the highest probability
     #if it's a tie, choose one to return.
 
+def getCoreBeliefClass(list, parentclass):
+	corebeliefclasses = parentclasstocbc.get(parentclass)
+	belongingvalue = 0
+	safetyvalue = 0
+	moralityvalue = 0
+	defectivenessvalue = 0
+	wholenessvalue = 0
+	selfworthvalue = 0
+
+	belonging = []
+	safety = []
+	morality = []
+	defectiveness = []
+	wholeness = []
+	selfworth = []
 
 
+	for cbc in corebeliefclasses:
+
+		if cbc == "belonging":
+			for word in list:
+				belonging.append(checkBelongingCoreBeliefClassProb(word))
+
+		if cbc == "safety":
+			for word in list:
+				safety.append(checkSafetyCoreBeliefClassProb(word))
+
+		if cbc == "morality":
+			for word in list:
+				morality.append(checkMoralityCoreBeliefClassProb(word))
+
+		if cbc == "defectiveness":
+				for word in list:
+					defectiveness.append(checkDefectiveCoreBeliefClassProb(word))
+
+		if cbc == "wholeness":
+			for word in list:
+				wholeness.append(checkWholenessCoreBeliefClassProb(word))
+
+		if cbc == "selfworth":
+			for word in list:
+				selfworth.append(checkSelfWorthCoreBeliefClassProb(word))
+
+	for num in belonging:
+		belongingvalue += num
+
+	for num in safety:
+		safetyvalue += num
+
+	for num in morality:
+		moralityvalue += num
+
+	for num in defectiveness:
+		defectivenessvalue += num
+
+	for num in wholeness:
+		wholenessvalue += num
+
+	for num in selfworth:
+		selfworthvalue += num
+
+
+	highest = max(belongingvalue, safetyvalue, moralityvalue, defectivenessvalue, wholenessvalue, selfworthvalue)
+	if belongingvalue == highest:
+		return "belonging"
+
+	elif safetyvalue == highest:
+		return "safety"
+
+	elif moralityvalue == highest:
+		return "morality"
+
+	elif defectivenessvalue == highest:
+		return "defectiveness"
+
+	elif wholenessvalue == highest:
+		return "wholeness"
+
+	elif selfworthvalue == highest:
+		return "selfworth"
 
 #function to check the core belief. This function takes in keywords and also the CBC class. It then calls the corresponding core belief functions,
     #and returns the core belief with the highest score.
     #if it's a tie, choose one to return.
 
+def getCoreBelief(list, corebeliefclass):
+
+	corebeliefs = cbctocorebelief.get(corebeliefclass)
+
+	defectivevalue = 0
+	unlovablevalue = 0
+	safevalue = 0
+	wholevalue = 0
+	nothingvalue = 0
+	worthlessvalue = 0
+	powerlessvalue = 0
+	balancevalue = 0
+	unsurevalue = 0
+	belongvalue = 0
+
+	defective = []
+	unlovable = []
+	safe = []
+	whole = []
+	nothing = []
+	worthless = []
+	powerless = []
+	balance = []
+	unsure = []
+	belong = []
+
+	for cb in corebeliefs:
+
+		if cb == "defective":
+			for word in list:
+				defective.append(checkDefectiveCoreBeliefProb(word))
+
+		elif cb == "unlovable":
+			for word in list:
+				unlovable.append(checkUnlovableCoreBeliefProb(word))
+
+		elif cb == "safe":
+			for word in list:
+				safe.append(checkSafetyCoreBeliefProb(word))
+
+		elif cb == "whole":
+			for word in list:
+				whole.append(checkWholeCoreBeliefProb(word))
+
+		elif cb == "nothing":
+			for word in list:
+				nothing.append(checkNothingCoreBeliefProb(word))
+
+		elif cb == "worthless":
+			for word in list:
+				worthless.append(checkWorthlessCoreBeliefProb(word))
+
+		elif cb == "powerless":
+			for word in list:
+				powerless.append(checkPowerlessCoreBeliefProb(word))
+
+		elif cb == "balance":
+			for word in list:
+				balance.append(checkBalanceCoreBeliefProb(word))
+
+		elif cb == "unsure":
+			for word in list:
+				unsure.append(checkUnsureCoreBeliefProb(word))
+
+		elif cb == "belong":
+			for word in list:
+				belong.append(CheckBelongCoreBeliefProb(word))
 
 
-#USER INPUT - MAIN FUNCTION THAT PROMPTS THE USER WITH QUESTIONS, AND PROCESSES THEIR RESPONSES INTO KEYWORDS, THEN CALLING THE FUNCTIONS ABOVE---------------------------------------------------------------
+	for num in defective:
+		defectivevalue += num
+
+	for num in unlovable:
+		unlovablevalue += num
+
+	for num in safe:
+		safevalue += num
+
+	for num in nothing:
+		nothingvalue += num
+
+	for num in worthless:
+		worthlessvalue += num
+
+	for num in powerless:
+		powerlessvalue += num
+
+	for num in balance:
+		balancevalue += num
+
+	for num in unsure:
+		unsurevalue += num
+
+	for num in belong:
+		belongvalue += num
+
+	for num in whole:
+		wholevalue += num
+
+
+	highest = max(defectivevalue, unlovablevalue, safevalue, nothingvalue, worthlessvalue, powerlessvalue, balancevalue, unsurevalue, belongvalue, wholevalue)
+
+
+	if defectivevalue == highest:
+		return "defective"
+
+	elif unlovablevalue == highest:
+		return "unlovable"
+
+	elif safevalue == highest:
+		return "safe"
+
+	elif nothingvalue == highest:
+		return "nothing"
+
+	elif worthlessvalue == highest:
+		return "worthless"
+
+	elif powerlessvalue == highest:
+		return "powerless"
+
+	elif balancevalue == highest:
+		return "balance"
+
+	elif unsurevalue == highest:
+		return "unsure"
+
+	elif belongvalue == highest:
+		return "belong"
+
+	elif wholevalue == highest:
+		return "whole"
+
+#Testing the model.
+
+def testFunction():
+
+	firstanswer = ["I", "feel", "so", "safe", "unsafe"]
+	secondanswer = ["I", "just", "feel", "not"]
+	thirdanswer = ["I", "just", "do", "not" , "safe", "world."]
+
+
+	parentclass = getParentClass(firstanswer)
+	corebeliefclass = getCoreBeliefClass(secondanswer, parentclass)
+	corebelief = getCoreBelief(thirdanswer, corebeliefclass)
+
+
+	print parentclass
+	print corebeliefclass
+	print cbtostatement.get(corebelief)
+
+
+
+
+testFunction()
+input("How are you feeling today?")
+
+#USER INPUT - MAIN FUNCTION THAT PROMPTS THE USER WITH QUESTIONS, AND TELLS THEM THEIR CORE BELIEF---------------------------------------------------------------
 
 #def main function
 #ask the user the first question, and then register their first response as keywords.
