@@ -919,6 +919,7 @@ def testFunction():
 #USER INPUT - MAIN FUNCTION THAT PROMPTS THE USER WITH QUESTIONS, AND TELLS THEM THEIR CORE BELIEF------------------
 
 def userInputFunction():
+	print("Welcome to belief! ")
 	preanswer = raw_input("How are you feeling today? ")
 	firstanswer = raw_input("What negative thought about yourself would you like to change today? ")
 	firstanswerarray = firstanswer.split()
@@ -930,12 +931,19 @@ def userInputFunction():
 	thirdanswerarray = thirdanswer.split()
 	corebelief = getCoreBelief(thirdanswerarray, corebeliefclass)
 
-	print parentclass
-	print corebeliefclass
-	print corebelief
+#OUTPUT
 
-	#print secondanswer
-	#print thirdanswer
+	print ("\n")
+	print ("Thank you for your answers. ")
+	print ("\n")
+	print ("We have identified your core belief, we think it is - ")
+	print cbtostatement.get(corebelief)
+	print ("\n")
+	print ("You are not alone, a lot of people share this common belief. :)")
+	print ("\n")
+	print ("Here's how you could shift it: ")
+
+
 
 #testFunction()
 userInputFunction()
