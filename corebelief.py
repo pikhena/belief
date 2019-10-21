@@ -124,13 +124,13 @@ parentclasstocbc = {
 
 #core belief class to quote, is a dictionary that shows the mapping between core belief classes and the quotes and ecouraging words we'd like to show the user based on the core belief class detected.
 cbctoquote = {
-		"defectiveness" : ["quote1", "advice1"],
-		"safety" : ["quote2", "advice2"],
-		"wholeness" : ["quote3", "advice3"],
-		"selfworth" : ["quote4", "advice4"],
-		"boundaries" : ["quote5", "advice5"],
-		"morality" : ["quote6", "advice6"],
-        "belonging" : ["quote7", "advice7"]
+		"defectiveness" : ["Yes you are imperfect and vulnerable and sometimes afraid but that does not change the truth that you are also brave and worthy of love and belonging. No one is perfect we are in this together"],
+		"safety" : ["Fear does not exist anywhere except in the mind. We suffer more in imagination than in reality. In the end, everything will be alright. Regardless of how horrible you may feel about the situation."],
+		"wholeness" : ["It is when you stop searching for home within others and lift the foundations of home within yourself, that you find there are no roots more intimate than those between a mind and body that have decided to be whole. You are whole, just as you are. You do not need to try to be whole."],
+		"selfworth" : ["All humans have worth, including you. Your birthright as a human being to have a worth and joy. Please, always remember how important you are, just by the virtue of being here on earth. You are a light and you deserve everything. It will get better, I promise you."],
+		"boundaries" : ["Daring to set boundaries is about having the courage to love ourselves, even when we risk disappointing others. It is more important to love all of you, flawed and all, even when it does not it please others."],
+		"morality" : ["The greatest thing in the world is to know how to belong to oneself and trusting yourself and the things you love. This is how you grow self power."],
+        "belonging" : ["True belonging is the practice of believing in and belonging to yourself so deeply that you can share your most authentic self with the world and find sacredness in both being a part of something and standing alone in the wilderness. True belonging does not require you to change who you are; it requires you to be who you are."]
 	};
 
 #corebelief to core belief statements
@@ -942,6 +942,12 @@ def userInputFunction():
 	print ("You are not alone, a lot of people share this common belief. :)")
 	print ("\n")
 	print ("Here's how you could shift it: ")
+	print ("Try journaling about the reasons why you have this belief, and be mindful about your thoughts. Realize your thoughts are just thoughts, they do not define who you are. With mindfulness and journaling you will learn to very quickly and easily shift out of negative thought and become fully present in the moment. It will give you mastery over your thoughts and feelings, opening your eyes to whether the products of your mind are useful tools for self-discovery or merely distractions.Always remember that you are experiencing a shared human emotion, and you are not alone. Be gentle with yourself, we are all doing our best in our own ways.")
+	print ("\n")
+	print("Encouraging words for you today: ")
+	print cbctoquote.get(corebeliefclass)
+	print ("\n")
+
 
 
 
