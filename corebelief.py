@@ -140,8 +140,8 @@ cbtostatement = {
 		"safe" : "I am unsafe, I can't trust anyone.",
 		"whole" : " I am not whole, I have lost my spirit.",
 		"nothing" : "I am nothing, I don't exist.",
-		"worthless" : "I am worthless.",
-		"powerless" : "I am powerless",
+		"worthless" : "I am worthless, and not worth being valued.",
+		"powerless" : "I am powerless.",
 		"balance" : "I am out of balance, my life is out of control.",
 		"unsure" : "I am wrong about everything.",
 		"belong" : "I don't belong, no one understands me."
